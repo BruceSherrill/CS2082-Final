@@ -2,256 +2,127 @@ import java.util.Random;
 
 public class Dice {
 
-	//Double Array holds rolled chars like pseudo boggle board
-	//where [x][y] and x being row and y being column
-	private char[][] board  = new char[4][4];
+	//The die
+	private char[] arrayOfDieSides = {'x','x','x','x','x','x'};
 	
-	//Official Die Configuration
-	private char[] die1 = {'R','I','F','O','B','X'};
-	private char[] die2 = {'I','F','E','H','E','Y'};
-	private char[] die3 = {'D','E','N','O','W','S'};
-	private char[] die4 = {'U','T','O','K','N','D'};
-	private char[] die5 = {'H','M','S','R','A','O'};
-	private char[] die6 = {'L','U','P','E','T','S'};
-	private char[] die7 = {'A','C','I','T','O','A'};
-	private char[] die8 = {'Y','L','G','K','U','E'};
-	private char[] die9 = {'Q','B','M','J','O','A'};
-	private char[] die10 = {'E','H','I','S','P','N'};
-	private char[] die11 = {'V','E','T','I','G','N'};
-	private char[] die12 = {'B','A','L','I','Y','T'};
-	private char[] die13 = {'E','Z','A','V','N','D'};
-	private char[] die14 = {'R','A','L','E','S','C'};
-	private char[] die15 = {'U','W','I','L','R','G'};
-	private char[] die16 = {'P','A','C','E','M','D'};
-	
-	
-	public char[][] getBoard() {
-		return board;
-	}
-	public void setBoard(char[][] board) {
-		this.board = board;
-	}
+	//Potential Side labels (Depending on die number)
+	final private char[] die1 = {'R','I','F','O','B','X'};
+	final private char[] die2 = {'I','F','E','H','E','Y'};
+	final private char[] die3 = {'D','E','N','O','W','S'};
+	final private char[] die4 = {'U','T','O','K','N','D'};
+	final private char[] die5 = {'H','M','S','R','A','O'};
+	final private char[] die6 = {'L','U','P','E','T','S'};
+	final private char[] die7 = {'A','C','I','T','O','A'};
+	final private char[] die8 = {'Y','L','G','K','U','E'};
+	final private char[] die9 = {'Q','B','M','J','O','A'};
+	final private char[] die10 = {'E','H','I','S','P','N'};
+	final private char[] die11 = {'V','E','T','I','G','N'};
+	final private char[] die12 = {'B','A','L','I','Y','T'};
+	final private char[] die13 = {'E','Z','A','V','N','D'};
+	final private char[] die14 = {'R','A','L','E','S','C'};
+	final private char[] die15 = {'U','W','I','L','R','G'};
+	final private char[] die16 = {'P','A','C','E','M','D'};
 	
 	
-	
-	public char[] getDie1() {
-		return die1;
-	}
-	public void setDie1(char[] die1) {
-		this.die1 = die1;
-	}
-	public char[] getDie2() {
-		return die2;
-	}
-	public void setDie2(char[] die2) {
-		this.die2 = die2;
-	}
-	public char[] getDie3() {
-		return die3;
-	}
-	public void setDie3(char[] die3) {
-		this.die3 = die3;
-	}
-	public char[] getDie4() {
-		return die4;
-	}
-	public void setDie4(char[] die4) {
-		this.die4 = die4;
-	}
-	public char[] getDie5() {
-		return die5;
-	}
-	public void setDie5(char[] die5) {
-		this.die5 = die5;
-	}
-	public char[] getDie6() {
-		return die6;
-	}
-	public void setDie6(char[] die6) {
-		this.die6 = die6;
-	}
-	public char[] getDie7() {
-		return die7;
-	}
-	public void setDie7(char[] die7) {
-		this.die7 = die7;
-	}
-	public char[] getDie8() {
-		return die8;
-	}
-	public void setDie8(char[] die8) {
-		this.die8 = die8;
-	}
-	public char[] getDie9() {
-		return die9;
-	}
-	public void setDie9(char[] die9) {
-		this.die9 = die9;
-	}
-	public char[] getDie10() {
-		return die10;
-	}
-	public void setDie10(char[] die10) {
-		this.die10 = die10;
-	}
-	public char[] getDie11() {
-		return die11;
-	}
-	public void setDie11(char[] die11) {
-		this.die11 = die11;
-	}
-	public char[] getDie12() {
-		return die12;
-	}
-	public void setDie12(char[] die12) {
-		this.die12 = die12;
-	}
-	public char[] getDie13() {
-		return die13;
-	}
-	public void setDie13(char[] die13) {
-		this.die13 = die13;
-	}
-	public char[] getDie14() {
-		return die14;
-	}
-	public void setDie14(char[] die14) {
-		this.die14 = die14;
-	}
-	public char[] getDie15() {
-		return die15;
-	}
-	public void setDie15(char[] die15) {
-		this.die15 = die15;
-	}
-	public char[] getDie16() {
-		return die16;
-	}
-	public void setDie16(char[] die16) {
-		this.die16 = die16;
+
+	//Default Constructor
+	Dice(){
 	}
 	
+	//Overloaded Constructor
+	Dice(int dieNum){
+		
+		
+		//Switch statement that will assign the die characters 
+		//depending on which die is calling the method.
+		//Example: If 1 is being passed, you are trying to set the 
+		//sides of the die for the top left corner. If 2, the following die
+		//to the right of one will be set and so on and so forth
+		switch (dieNum) {
+		
+		case 1: 
+			System.arraycopy(die1, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 2: 
+			System.arraycopy(die2, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 3: 
+			System.arraycopy(die3, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 4: 
+			System.arraycopy(die4, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 5: 
+			System.arraycopy(die5, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 6: 
+			System.arraycopy(die6, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 7: 
+			System.arraycopy(die7, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 8: 
+			System.arraycopy(die8, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 9: 
+			System.arraycopy(die9, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 10: 
+			System.arraycopy(die10, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 11: 
+			System.arraycopy(die11, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 12: 
+			System.arraycopy(die12, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 13: 
+			System.arraycopy(die13, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 14: 
+			System.arraycopy(die14, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 15: 
+			System.arraycopy(die15, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		case 16: 
+			System.arraycopy(die16, 0, arrayOfDieSides, 0, arrayOfDieSides.length);
+			break;
+		default: 
+			System.out.println("Provide constructor with # from 1 to 16"
+					+ "or sides will default to 'x'");
+			
+		}
+		
+	}
 	
 	
 	//A method that retrieves a letter from each individual die
-	public char rollDice(char[] die) {
-		
+		public char getRandomSide(Dice die) {
+				
 		//Will randomly generate a number following (0 <= x < 6 )
 		int dieSide = new Random().nextInt(6);
-		
-		return die[dieSide];
-	}
-	
-	
-	//Sets the array that will pass char's to the board
-	public void setBoardArray() {
-		
-		//Increment that ensures each die is rolled and set to proper space on board
-		int counter = 0;
-		
-		//Two loops that steps through double array that represents board spaces
-		for(int x = 0; x < 4; x++) {
-			for(int y = 0; y < 4; y++) {
 				
-				switch (counter) {
-				
-				case 0:
-					board[x][y] = rollDice(getDie1());
-					counter++;
-					break;
-				case 1:
-					board[x][y] = rollDice(getDie2());
-					counter++;
-					break;
-				case 2:
-					board[x][y] = rollDice(getDie3());
-					counter++;
-					break;
-				case 3:
-					board[x][y] = rollDice(getDie4());
-					counter++;
-					break;
-				case 4:
-					board[x][y] = rollDice(getDie5());
-					counter++;
-					break;
-				case 5:
-					board[x][y] = rollDice(getDie6());
-					counter++;
-					break;
-				case 6:
-					board[x][y] = rollDice(getDie7());
-					counter++;
-					break;
-				case 7:
-					board[x][y] = rollDice(getDie8());
-					counter++;
-					break;
-				case 8:
-					board[x][y] = rollDice(getDie9());
-					counter++;
-					break;
-				case 9:
-					board[x][y] = rollDice(getDie10());
-					counter++;
-					break;
-				case 10:
-					board[x][y] = rollDice(getDie11());
-					counter++;
-					break;
-				case 11:
-					board[x][y] = rollDice(getDie12());
-					counter++;
-					break;
-				case 12:
-					board[x][y] = rollDice(getDie13());
-					counter++;
-					break;
-				case 13:
-					board[x][y] = rollDice(getDie14());
-					counter++;
-					break;
-				case 14:
-					board[x][y] = rollDice(getDie15());
-					counter++;
-					break;
-				case 15:
-					board[x][y] = rollDice(getDie16());
-					counter++;
-					break;
-				}
-			}
+		return arrayOfDieSides[dieSide];
+		}
+		
+	
+	//Test to show sides are assigned properly
+	public void showDieSides() {
+		int x = 0;
+		while(x < arrayOfDieSides.length) {
+			System.out.println(arrayOfDieSides[x]);
+			x++;
 		}
 		
 	}
 	
 	
-	//A method to test each 'board' cell of the board array is initialized
-	public void testBoardArray() {
-		
-		for(int x = 0; x < 4; x++) {
-			for(int y = 0; y < 4; y++) {
-				
-				System.out.print(board[x][y] + " ");
-				
-			}
-			System.out.println();
-		}
-		
+	public static void main (String[] args) {
+		Dice firstDie = new Dice(1);
+		Dice die2 = new Dice(88);
+		firstDie.showDieSides();
+		die2.showDieSides();
 	}
-	
-	
-	public static void main(String[] args) {
-		
-		Dice demo = new Dice();
-		
-		demo.setBoardArray();
-		demo.testBoardArray();
-	}
-	
-	
-	
-	
-	
 	
 }
