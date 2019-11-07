@@ -232,9 +232,10 @@ public class Dice {
 		for(int x = 0; x < 4; x++) {
 			for(int y = 0; y < 4; y++) {
 				
-				System.out.println(board[x][y]);
+				System.out.print(board[x][y] + " ");
 				
 			}
+			System.out.println();
 		}
 		
 	}
