@@ -3,7 +3,7 @@ public class Driver //Test a change
 {
     public static void main(String args[]) 
     {
-    	
+    	// mitch test. 
     	//Creates the trie
     	Trie tree = new Trie();
     	
