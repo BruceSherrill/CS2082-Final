@@ -24,10 +24,14 @@ public class timer extends JPanel {
       public void actionPerformed(ActionEvent e) 
       {
         count--;
+        //if counter is still >0 it will reset the label
         if (count > 0) {
           label.setText(Integer.toString(count));
-        } else {
+        } 
+        //else stop the timer & actionEvent
+        else {
           ((Timer) (e.getSource())).stop();
+          
         }
       }
     });
@@ -40,6 +44,12 @@ public class timer extends JPanel {
 	    timer.start();
   }
   
+  public void resetTimer() {
+	  timer.stop();
+	  count = 180;
+      label.setText(Integer.toString(count));
+
+  }
   
 
 }
