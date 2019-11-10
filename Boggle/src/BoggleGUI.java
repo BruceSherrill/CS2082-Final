@@ -48,6 +48,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	//
 	private JTextArea displayArea = new JTextArea(4, 10);
 	
+    timer timer = new timer();
+	
 	private BoggleGUI () {
 		// Window Requirements.
 		super("Boggle");
@@ -103,7 +105,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	// Timer panel. 
 	private void buildBottomPanel() {
-		bottomPanel.add(timerBtn);
+		bottomPanel.add(timer);
 		
 	}
 	
@@ -135,6 +137,11 @@ public class BoggleGUI extends JFrame implements ActionListener {
 			displayArea.append("Button 2, clicked");
 		}
 		
+		else if (clicker == "start")
+		{
+			timer.startTimer();
+		}
+		
 	}
 	
 	// Making buttons click able.
@@ -157,6 +164,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		dieBtn14.addActionListener(this);
 		dieBtn15.addActionListener(this);
 		dieBtn16.addActionListener(this);
+		
+		startBtn.addActionListener(this);
+		
 
 	}
 	
