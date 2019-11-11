@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -16,9 +17,12 @@ public class timer extends JPanel {
   {
 	//set to false until the counter starts
 	inGame = false;
+
+	
 	//What shows when the timer is not running
     label = new JLabel("3:00");
-    
+	label.setForeground(Color.black);
+
     //Adds label to panel
     add(label);
     
@@ -26,19 +30,21 @@ public class timer extends JPanel {
     timer = new Timer(1000, new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) 
-      {
-        count--;
+      {      
         //if counter is still >=0 it will reset the label 
         if (count >= 0) {
-        	int sec = count % 60;
-            int min = (count / 60)%60;
-          label.setText(Integer.toString(min) + ":" + Integer.toString(sec));
+        	
+        	timerDisplay();
+
         } 
         //else stop the timer & actionEvent
         else {
           ((Timer) (e.getSource())).stop();
           inGame = false;
+          label.setText("GAME OVER");
+
         }
+        count--;
       }
     });
     
@@ -56,12 +62,41 @@ public class timer extends JPanel {
   //Method to Reset Timer
   public void resetTimer() 
   {
+	  label.setForeground(Color.black);
 	  inGame = false;
 	  timer.stop();
 	  count = 180;
-      label.setText(Integer.toString(count));
+      timerDisplay();
   }
   
+  public void timerDisplay() {
+  	int sec = count % 60;
+    int min = (count / 60)%60;
+    
+    if (min>0 && sec>=10)
+    {
+    label.setText(Integer.toString(min) + ":" + Integer.toString(sec));
+    }
+    
+    else if (min>0 && sec<10) 
+    {
+        label.setText(Integer.toString(min) + ":0" + Integer.toString(sec));
+    }
+    
+    else if (min<=0 && sec>10) 
+    {
+        label.setText(Integer.toString(sec));
+    }
+    
+    else if (min<=0 && sec<=10) 
+    {
+    	label.setForeground(Color.red);
+        label.setText(Integer.toString(sec));
+    }
+    
+    
+
+  }
   //returns whether the timer is running or not (AKA user is in game)
   public boolean getInGame() {
 	  return inGame;
