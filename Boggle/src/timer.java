@@ -9,11 +9,15 @@ public class timer extends JPanel {
   JLabel label;
   Timer timer;
   int count = 180;
+  boolean inGame;
   
   
-  public timer() {
+  public timer() 
+  {
+	//set to false until the counter starts
+	inGame = false;
 	//What shows when the timer is not running
-    label = new JLabel("180");
+    label = new JLabel(Integer.toString(count));
     
     //Adds label to panel
     add(label);
@@ -24,14 +28,14 @@ public class timer extends JPanel {
       public void actionPerformed(ActionEvent e) 
       {
         count--;
-        //if counter is still >0 it will reset the label
-        if (count > 0) {
+        //if counter is still >=0 it will reset the label 
+        if (count >= 0) {
           label.setText(Integer.toString(count));
         } 
         //else stop the timer & actionEvent
         else {
           ((Timer) (e.getSource())).stop();
-          
+          inGame = false;
         }
       }
     });
@@ -40,16 +44,27 @@ public class timer extends JPanel {
   
   
   //Method to start the timer
-  public void startTimer() {
+  public void startTimer() 
+  {
 	    timer.start();
+	    inGame = true;
   }
   
-  public void resetTimer() {
+  
+  //Method to Reset Timer
+  public void resetTimer() 
+  {
+	  inGame = false;
 	  timer.stop();
 	  count = 180;
       label.setText(Integer.toString(count));
-
   }
+  
+  //returns whether the timer is running or not (AKA user is in game)
+  public boolean getInGame() {
+	  return inGame;
+  }
+
   
 
 }
