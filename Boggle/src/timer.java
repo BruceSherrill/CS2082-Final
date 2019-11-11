@@ -17,7 +17,7 @@ public class timer extends JPanel {
 	//set to false until the counter starts
 	inGame = false;
 	//What shows when the timer is not running
-    label = new JLabel(Integer.toString(count));
+    label = new JLabel("3:00");
     
     //Adds label to panel
     add(label);
@@ -30,7 +30,9 @@ public class timer extends JPanel {
         count--;
         //if counter is still >=0 it will reset the label 
         if (count >= 0) {
-          label.setText(Integer.toString(count));
+        	int sec = count % 60;
+            int min = (count / 60)%60;
+          label.setText(Integer.toString(min) + ":" + Integer.toString(sec));
         } 
         //else stop the timer & actionEvent
         else {
