@@ -216,8 +216,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	// Timer panel. 
 	private void buildBottomPanel() {
-		bottomPanel.add(timer);
-		
+		bottomPanel.add(timer);	
 	}
 	
 	// Adding the panels to the frame after they've been built. 
@@ -227,7 +226,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 		
 		add(mainPanel);
-		
 	}
 	
 	// Action Listeners
