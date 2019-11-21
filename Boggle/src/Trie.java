@@ -38,9 +38,7 @@ class Trie
 		
 		
 		if (word.length() > 3) //ask group about this (minimum word length)
-		{
-			System.out.println("Inserting: " + word);   
-	
+		{	
 			//for every letter in the word
 			for (int i = 0; i < word.length(); i++)
 			{
@@ -68,12 +66,7 @@ class Trie
 	public boolean isWord(String word)
 	{
 		Trie temp = this; 
-		
-		
-		System.out.println("Searching for: " + word);
-		System.out.print("Found: ");
-		
-		
+			
 		//for every letter in the word
 		for (int i = 0; i < word.length(); i++)
 		{
