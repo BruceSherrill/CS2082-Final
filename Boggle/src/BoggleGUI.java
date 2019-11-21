@@ -185,27 +185,10 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 
 	
-	
-//	public void findWords(char boggle[][], int x, int y)
-//	{
-//		String currentWord = " ";
-//		currentWord = currentWord + boggle[x][y];
-//        System.out.println(currentWord); 
-//
-//		 for (int row = x - 1; row <= x + 1 && row < 4; row++) 
-//	            for (int col = y - 1; col <= y + 1 && col < 4; col++) 
-//	                if (row >= 0 && col >= 0 && !isSelected[row][col]) 
-//	                    findWords(boggle, row, col); 
-//		 
-//	        isSelected[x][y] = true; 
-//
-//	        currentWord = "" + currentWord.charAt(currentWord.length() - 1); 
-//
-//
-//	}
+
 	
 	
-	 public void findWordsUtil(char boggle[][], boolean isSelected[][], int x, int y, String word) 
+	 public void findWords(char boggle[][], boolean isSelected[][], int x, int y, String word) 
 			{ 
 				// Mark current cell as visited and append current character 
 				// to str 
@@ -225,7 +208,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 				for (int row=x-1; row<=x+1 && row<4; row++) {
 				for (int col=y-1; col<=y+1 && col<4; col++) {
 					if (row>=0 && col >=0  && isSelected[row][col] == false) {
-						   findWordsUtil(boggle, isSelected, row, col, word); 
+						   findWords(boggle, isSelected, row, col, word); 
 					}
 					}
 				}
@@ -299,7 +282,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
   		for(int x=0; x<4; x++) {
          	 for (int y=0; y<4; y++) {
        		System.out.println(x + "," + y);
-  		findWordsUtil(letterArray, isSelected, x, y, stringTest);
+  		findWords(letterArray, isSelected, x, y, stringTest);
          	 }
   		}
   		//-------------------------------------------------------------------------------------------
