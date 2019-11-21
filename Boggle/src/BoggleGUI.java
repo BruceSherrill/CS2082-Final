@@ -185,8 +185,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 
 	
-
-	
 	
 	 public void findWords(char boggle[][], boolean isSelected[][], int x, int y, String word) 
 			{ 
