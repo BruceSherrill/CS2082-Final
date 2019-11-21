@@ -10,12 +10,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class BoggleGUI extends JFrame implements ActionListener {
-	
 
 	// More buttons. Separated for organizational purposes. 
 	private JButton startBtn = new JButton("start");
 	private JButton confirmWordBtn = new JButton("confirmWord");
-
 
 	
 	// PANELS.
@@ -24,7 +22,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private JPanel bottomPanel = new JPanel(new BorderLayout());
 	private JPanel mainPanel = new JPanel(new BorderLayout());
 	
-
 	private JTextArea displayArea = new JTextArea(4, 10);
 	
 	
@@ -34,7 +31,11 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	boolean[][] isSelected = new boolean[4][4];
 	boolean[][] nextSelection = new boolean[4][4];
 	boolean firstLetter = true;
-    
+    char letterArray[][] = new char[4][4];
+	String stringTest = "";
+	Trie tree = new Trie();
+	
+
     
 	
 	private BoggleGUI () {
@@ -44,7 +45,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		
+		tree.importDictionary();
 		// Boggle Board is divided into three panels. 
 		// Left for the dies
 		// right for the UI
@@ -55,15 +56,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		addPanelsToFrame();
 		addListener();
 				
-		//IF YOU GUYS WANT TO MAKE TIMER
-		//START WHEN GUI IS RAN, PUT 
-		//timer.startTimer(); HERE
+
 		setVisible(true);
 	}
-	
-
-	
-	
 	
 	
 
@@ -76,11 +71,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		char[] diceSet = new char[16];
 		diceSet = die.getDieSet();
 		
-		
 		int counter = 0;
 		JButton button;
 		
-
 		//fills buttonArray with 16 buttons w/ their appropriate label
 		for (int i=0; i<diceSet.length; i++)
 		{
@@ -95,7 +88,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 			  }
 		  }
 		 
-		 
+
 		 //2 for loops that get the x & y coordinate
 		for(int x=0; x<4; x++) {
         	 for (int y=0; y<4; y++) {
@@ -103,10 +96,10 @@ public class BoggleGUI extends JFrame implements ActionListener {
       			  int xPosition = x;
 
      			int count = counter;
-     			
      			//adds button to panel
      			leftPanel.add(buttonArray[counter]);
      			//adds action listener to button
+		        letterArray[xPosition][yPosition] = buttonArray[count].getLabel().charAt(0); 
      			buttonArray[counter].addActionListener(new ActionListener() {
         			 @SuppressWarnings("deprecation")
 					public void actionPerformed(ActionEvent e) {
@@ -118,19 +111,16 @@ public class BoggleGUI extends JFrame implements ActionListener {
         				 }
         			 }
         			 });
-     			
      			//increments every loop for 16 total loops
      			counter++;
         	 }
         }
+		
+
+
+
+
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	//if returns true the user can click the button
@@ -166,7 +156,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	    			  }
 	    	  }
 	    return true;
-
 		 }
 		 
 		 //isSelected[x][y] prevents the user from clicking the same button twice
@@ -192,17 +181,62 @@ public class BoggleGUI extends JFrame implements ActionListener {
 			 isSelected[x][y] = true;
 			 return true;
 		 }
-		 
-		 
 		return false;
 	}
 
 	
 	
+//	public void findWords(char boggle[][], int x, int y)
+//	{
+//		String currentWord = " ";
+//		currentWord = currentWord + boggle[x][y];
+//        System.out.println(currentWord); 
+//
+//		 for (int row = x - 1; row <= x + 1 && row < 4; row++) 
+//	            for (int col = y - 1; col <= y + 1 && col < 4; col++) 
+//	                if (row >= 0 && col >= 0 && !isSelected[row][col]) 
+//	                    findWords(boggle, row, col); 
+//		 
+//	        isSelected[x][y] = true; 
+//
+//	        currentWord = "" + currentWord.charAt(currentWord.length() - 1); 
+//
+//
+//	}
 	
 	
-	
-	
+	 public void findWordsUtil(char boggle[][], boolean isSelected[][], int x, int y, String word) 
+			{ 
+				// Mark current cell as visited and append current character 
+				// to str 
+				isSelected[x][y] = true; 
+				word = word + boggle[x][y]; 
+				
+				// If str is present in dictionary, then print it 
+				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) 
+				System.out.println(word); 
+				
+				// Traverse 8 adjacent cells of boggle[x][y] 
+				
+				//x-1 gets the cell to the left
+				//row <=x+1 ensures it won't go more than 1 to the right
+				//row<4 ensures it won't go past the 4th cell (edge of board)
+				
+				for (int row=x-1; row<=x+1 && row<4; row++) {
+				for (int col=y-1; col<=y+1 && col<4; col++) {
+					if (row>=0 && col >=0  && isSelected[row][col] == false) {
+						   findWordsUtil(boggle, isSelected, row, col, word); 
+					}
+					}
+				}
+		        	 
+
+				// Erase current character from string and mark visited 
+				// of current cell as false 
+				word="";
+				isSelected[x][y] = false; 
+
+			} 
 	
 	
 	// UI panel. 
@@ -226,12 +260,12 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 		
 		add(mainPanel);
+		
 	}
 	
 	// Action Listeners
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 	String clicker = e.getActionCommand();
 
 
@@ -247,38 +281,43 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		}
       else if (clicker == "confirmWord")
       {
-    	  int tempCounter=0;
+    	  //reset board commented out to test getting answers on button press
+//    	  int tempCounter=0;
+//    	  
+//    	  for(int x=0; x<isSelected.length; x++)
+//    	  {
+//    		  for (int y=0; y<isSelected.length; y++)
+//    		  {
+//    			  isSelected[x][y] = false;
+//    			  firstLetter = true;
+//    			  buttonArray[tempCounter].setForeground(Color.BLACK);
+//    			  tempCounter++;
+//    		  }
+//    	  }
     	  
-    	  for(int x=0; x<isSelected.length; x++)
-    	  {
-    		  for (int y=0; y<isSelected.length; y++)
-    		  {
-    			  isSelected[x][y] = false;
-    			  firstLetter = true;
-    			  buttonArray[tempCounter].setForeground(Color.BLACK);
-    			  tempCounter++;
-    		  }
-    	  }
-      }
+  		//-------------------------------------------------------------------------------------------
+  		for(int x=0; x<4; x++) {
+         	 for (int y=0; y<4; y++) {
+       		System.out.println(x + "," + y);
+  		findWordsUtil(letterArray, isSelected, x, y, stringTest);
+         	 }
+  		}
+  		//-------------------------------------------------------------------------------------------
+      }//end of else if()
 		
-		displayArea.append("\n");
 	}
 	
 	
 	
 	// Making buttons click able.
 	private void addListener() {
-
 		startBtn.addActionListener(this);
 		confirmWordBtn.addActionListener(this);
-		
-		
 	}
 	
 	
 	// ============= Main ================
 	public static void main(String[] args) {
 		BoggleGUI gui = new BoggleGUI();
-		
 	}	
 }
