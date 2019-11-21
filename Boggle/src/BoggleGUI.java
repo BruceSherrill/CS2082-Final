@@ -289,7 +289,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 	
 	
-	
 	// Making buttons click able.
 	private void addListener() {
 		startBtn.addActionListener(this);
