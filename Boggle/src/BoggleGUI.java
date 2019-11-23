@@ -11,8 +11,9 @@ import javax.swing.JTextArea;
 //maybe get rid of letter array and just use buttonArray
 public class BoggleGUI extends JFrame implements ActionListener {
 
-	private JButton startBtn = new JButton("start");
-	private JButton confirmWordBtn = new JButton("confirmWord");
+	private JButton startBtn = new JButton("Start");
+	private JButton confirmWordBtn = new JButton("Confirm Word");
+	private JButton endGameBtn = new JButton("End Game");
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
 	private JPanel rightPanel = new JPanel(new GridLayout(2,1));
@@ -21,6 +22,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	private JTextArea displayArea = new JTextArea(4, 10);
 	
+	
     private timer timer = new timer();
     
 	JButton[][] buttonArray = new JButton[4][4];
@@ -28,6 +30,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	boolean[][] nextSelection = new boolean[4][4];
 
 	boolean firstLetter = true;
+	boolean gameStarted = false;
 	
 	String possibleWords = "";
 	
@@ -163,8 +166,16 @@ public class BoggleGUI extends JFrame implements ActionListener {
 				word = word + buttonArray[x][y].getLabel().charAt(0);
 				
 				// If str is present in dictionary, then print it 
-				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) 
-				System.out.println(word); 
+				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) {
+					  //Code that makes sure appended line outputs nicely. 
+		    		  displayArea.setLineWrap(true);
+		    		  displayArea.setWrapStyleWord(true);
+		    		  displayArea.append(word + "\n");
+		    		  //System.out.println(word);
+		    		  //The above line can be de-commented out 
+		    		  //If wish to test words in text area match system out
+				}
+				 
 				
 				
 				//row <=x+1 ensures it won't go more than 1 to the right
@@ -198,6 +209,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(startBtn);
 		rightPanel.add(confirmWordBtn);
 		rightPanel.add(displayArea);
+		rightPanel.add(endGameBtn);
 		
 	}
 
@@ -220,39 +232,67 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	String clicker = e.getActionCommand();
 
-
-      if (clicker == "start"){
+      if (clicker == "Start"){
 			timer.startTimer();
 			 for(int x=0; x<isSelected.length; x++){
 	    		  for (int y=0; y<isSelected.length; y++){
 	    			  isSelected[x][y] = false;
 	    		  }
 	    	  }
+			 gameStarted = true;
 		}
-      
-      else if (clicker == "confirmWord"){
-    	  //reset board commented out to test getting answers on button press
-//    	  int tempCounter=0;
-//    	  
-//    	  for(int x=0; x<isSelected.length; x++)
-//    	  {
-//    		  for (int y=0; y<isSelected.length; y++)
-//    		  {
-//    			  isSelected[x][y] = false;
-//    			  firstLetter = true;
-//    			  buttonArray[tempCounter].setForeground(Color.BLACK);
-//    			  tempCounter++;
-//    		  }
-//    	  }
-//    	  
-  		//-------------------------------------------------------------------------------------------
-  		for(int x=0; x<4; x++) {
-         	 for (int y=0; y<4; y++) {
-       		System.out.println(x + "," + y);
-  		findWords(isSelected, x, y, possibleWords);
-         	 }
-  		}
-  		//-------------------------------------------------------------------------------------------
+      else if (clicker == "End Game") {
+    	  
+    	  if(gameStarted != true) {
+    		  //Code that makes sure appended line outputs nicely. 
+    		  displayArea.setLineWrap(true);
+    		  displayArea.setWrapStyleWord(true);
+    		  displayArea.append("You must start the game before you end it!");
+    	  } else {
+    		  displayArea.append("All possible words on current board:\n" );
+        	  
+        	  //Bit of code that will return all possible words on board
+        	  for(int x=0; x<4; x++) {
+              	 for (int y=0; y<4; y++) {
+            		findWords(isSelected, x, y, possibleWords);
+              	 }
+       		}
+    	  }
+    	  
+    	 
+    	  
+    	  /*Need method to tally up points so total may be displayed here*/
+    	  //          (Will need method to confirm words first)          //
+    	  //                                                             //
+    	  //                       Method Here                           //
+    	  //                                                             //
+    	  //_____________________________________________________________//
+   	  
+    	  
+    	 timer.resetTimer();
+
+    	  
+      }
+      else if (clicker == "Confirm Word"){
+    	  
+    	  /*Need method to check if selected letters form true word here*/
+    	  //                                                             //
+    	  //                                                             //
+    	  //                       Method Here                           //
+    	  //                                                             //
+    	  //_____________________________________________________________//
+    	  
+    	  
+    	  
+    	  //Will reset button backgrounds so no longer orange. 
+    	  for(int x = 0; x < 4; x++) {
+    		  for(int y = 0; y < 4; y++) {
+    	    	  buttonArray[x][y].setBackground(null);
+    		  }
+    	  }
+    	  
+    	  
+  	  
       }//end of else if()
 	}
 	
@@ -260,6 +300,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private void addListener() {
 		startBtn.addActionListener(this);
 		confirmWordBtn.addActionListener(this);
+		endGameBtn.addActionListener(this);
 	}
 	
 	
