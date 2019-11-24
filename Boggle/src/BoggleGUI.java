@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 //maybe get rid of letter array and just use buttonArray
 public class BoggleGUI extends JFrame implements ActionListener {
@@ -209,6 +210,15 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(startBtn);
 		rightPanel.add(confirmWordBtn);
 		rightPanel.add(displayArea);
+		displayArea.setLineWrap(true);
+		displayArea.setEditable(false);
+		displayArea.setVisible(true);
+
+		    JScrollPane scroll = new JScrollPane (displayArea);
+		    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		          scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		rightPanel.add(scroll);
 		rightPanel.add(endGameBtn);
 		
 	}
