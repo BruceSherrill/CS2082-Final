@@ -210,13 +210,11 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(startBtn);
 		rightPanel.add(confirmWordBtn);
 		rightPanel.add(displayArea);
-		displayArea.setLineWrap(true);
 		displayArea.setEditable(false);
-		displayArea.setVisible(true);
 
-		    JScrollPane scroll = new JScrollPane (displayArea);
-		    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		          scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scroll = new JScrollPane (displayArea);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		rightPanel.add(scroll);
 		rightPanel.add(endGameBtn);
@@ -298,10 +296,13 @@ public class BoggleGUI extends JFrame implements ActionListener {
     	  for(int x = 0; x < 4; x++) {
     		  for(int y = 0; y < 4; y++) {
     	    	  buttonArray[x][y].setBackground(null);
+    	    	  nextSelection[x][y] = true;
     		  }
     	  }
     	  
-    	  
+    	  clearBooleanBoard(isSelected);
+    	 // clearBooleanBoard(nextSelection);
+
   	  
       }//end of else if()
 	}
