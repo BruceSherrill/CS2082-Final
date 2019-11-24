@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -17,12 +18,16 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private JButton endGameBtn = new JButton("End Game");
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
-	private JPanel rightPanel = new JPanel(new GridLayout(2,1));
+	private JPanel rightPanel = new JPanel(new GridLayout(3,4));
 	private JPanel bottomPanel = new JPanel(new BorderLayout());
 	private JPanel mainPanel = new JPanel(new BorderLayout());
 	
 	private JTextArea displayArea = new JTextArea(4, 10);
+	private JTextArea displayAreaConfirmedWords = new JTextArea(4, 10);
 	
+	// J label to display the given points. 
+	private JLabel pointLabel = new JLabel("Number of points: ");
+	private int characterCount = 0;
 	
     private timer timer = new timer();
     
@@ -92,6 +97,14 @@ public class BoggleGUI extends JFrame implements ActionListener {
         					 //temporary print statement
         					 System.out.println(xPosition + "," + yPosition + "     " + buttonArray[xPosition][yPosition].getLabel());
         				     buttonArray[xPosition][yPosition].setBackground(Color.ORANGE);
+        				     
+        				  
+        				     // Displaying the word onto the first display area.
+        				     String letterSelection = buttonArray[xPosition][yPosition].getLabel();
+        				     displayArea.append(letterSelection);
+        				     
+        				     
+        				  // =====================
         				 }
         			 }
         			 });
@@ -209,7 +222,11 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private void buildRightPanel() {
 		rightPanel.add(startBtn);
 		rightPanel.add(confirmWordBtn);
+		rightPanel.add(endGameBtn);
+		rightPanel.add(displayAreaConfirmedWords);
 		rightPanel.add(displayArea);
+		
+		rightPanel.add(pointLabel);
 		displayArea.setEditable(false);
 
 		JScrollPane scroll = new JScrollPane (displayArea);
@@ -217,7 +234,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		rightPanel.add(scroll);
-		rightPanel.add(endGameBtn);
+		
 		
 	}
 
@@ -290,6 +307,38 @@ public class BoggleGUI extends JFrame implements ActionListener {
     	  //                                                             //
     	  //_____________________________________________________________//
     	  
+    	// =================MITCH=======================================
+      	// Going into the next line, and spitting out the text to the second 
+      	// display area.
+      	  
+      	displayArea.append("\n");
+      	String tempWordToDisplayArea = displayArea.getText();
+      	
+      	// =================================================================
+      	// ==  LOOKING TO SURROUND THIS BLOCK OF CODE BY AN IF STATEMENT  ==
+      	// == TO MAKE SURE THE WORD IS ACTUALLY A WORD (CheckWord Method) ==
+      	// Getting the points.
+      	characterCount += bogglePoints(tempWordToDisplayArea);
+      	
+      	// If statement that only displays to the "Confirmed Words"
+      	// area if the text is long than three words. For some reason
+      	// we have to use "less than 4". Must be some issue with the 
+      	// buttons. But doesn't seem like a big deal. 
+      	if (tempWordToDisplayArea.length() >= 4 ) {
+      		displayAreaConfirmedWords.append(tempWordToDisplayArea);
+      	}
+      	
+      	pointLabel.setText("Number of points: " + characterCount);
+      	
+      	// Clearing the display area.
+      	displayArea.setText(null);
+      	
+      	// ==================================================================
+      	// ==================================================================
+    	  
+    	  
+    	  
+    	  
     	  
     	  
     	  //Will reset button backgrounds so no longer orange. 
@@ -306,6 +355,38 @@ public class BoggleGUI extends JFrame implements ActionListener {
   	  
       }//end of else if()
 	}
+	
+	// Boggle points method.
+		private int bogglePoints(String tempWord) {
+			// Words must be 3+ characters.
+			// for each character, points +1.
+			// five letter character = 5 points.
+			
+			System.out.println("boggle points tempWord: " + tempWord);
+			int characterCount = 0;
+			
+			// For each letter in the string, count+1;
+			if (tempWord.length() >= 4) {
+				for (int i = 0; i < tempWord.length(); i++) {
+					characterCount++;	
+				}
+				// un/comment if we don't want to penalize User for submitting 
+				// word with less than 3 characters.
+				//characterCount -= 1;
+			} else {
+				displayAreaConfirmedWords.append("Less than 3 chars \n");
+				System.out.println("A word that's less than 3 characters has been submitted.");
+			}
+			// For some reason the count is "one" more than the count
+			// should be. Decrement by 'one' to get the real point.
+		
+			// un/comment the following line of code if we want the user penalized for 
+			// confirming a word that is less than 3 chars.
+			 characterCount -= 1;
+			return(characterCount);
+		}
+	
+	
 	
 	// Making buttons click able.
 	private void addListener() {
