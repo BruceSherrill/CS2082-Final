@@ -22,8 +22,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private JPanel bottomPanel = new JPanel(new BorderLayout());
 	private JPanel mainPanel = new JPanel(new BorderLayout());
 	
-	private JTextArea displayArea = new JTextArea(4, 10);
-	private JTextArea displayAreaConfirmedWords = new JTextArea(4, 10);
+	private JTextArea displayArea = new JTextArea(7, 10);
+	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
 	
 	// J label to display the given points. 
 	private JLabel pointLabel = new JLabel("Number of points: ");
@@ -256,6 +256,10 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	String clicker = e.getActionCommand();
+	
+	
+	
+	
 
       if (clicker == "Start"){
 			timer.startTimer();
@@ -283,55 +287,43 @@ public class BoggleGUI extends JFrame implements ActionListener {
               	 }
        		}
     	  }
-    	  
-    	 
-    	  
-    	  /*Need method to tally up points so total may be displayed here*/
-    	  //          (Will need method to confirm words first)          //
-    	  //                                                             //
-    	  //                       Method Here                           //
-    	  //                                                             //
-    	  //_____________________________________________________________//
-   	  
-    	  
+
     	 timer.resetTimer();
 
     	  
       }
       else if (clicker == "Confirm Word"){
     	  
-    	  /*Need method to check if selected letters form true word here*/
-    	  //                                                             //
-    	  //                                                             //
-    	  //                       Method Here                           //
-    	  //                                                             //
-    	  //_____________________________________________________________//
-    	  
-    	// =================MITCH=======================================
-      	// Going into the next line, and spitting out the text to the second 
-      	// display area.
-      	  
-      	displayArea.append("\n");
-      	String tempWordToDisplayArea = displayArea.getText();
+
       	
-      	// =================================================================
-      	// ==  LOOKING TO SURROUND THIS BLOCK OF CODE BY AN IF STATEMENT  ==
-      	// == TO MAKE SURE THE WORD IS ACTUALLY A WORD (CheckWord Method) ==
-      	// Getting the points.
-      	characterCount += bogglePoints(tempWordToDisplayArea);
-      	
-      	// If statement that only displays to the "Confirmed Words"
-      	// area if the text is long than three words. For some reason
-      	// we have to use "less than 4". Must be some issue with the 
-      	// buttons. But doesn't seem like a big deal. 
-      	if (tempWordToDisplayArea.length() >= 4 ) {
-      		displayAreaConfirmedWords.append(tempWordToDisplayArea);
+      	// Lower casing the user word. 
+      	String userWord = displayArea.getText().toLowerCase();
+      	/*  If the word is true.
+      	 *  the word is sent into the isWord method in Trie
+      	 *  for validation. 
+      	 */
+      	System.out.println("User word length: " + userWord.length());
+      	if (tree.isWord(userWord) == true && userWord.length() >= 3) {
+      		System.out.print("true word, "); // test.
+      		// Appending the second display area to show the confirmed word.
+          	displayAreaConfirmedWords.append(userWord + "\n");
+          	// incrementing the CharacterCount/points.
+          	characterCount += bogglePoints(userWord);
+          	// Clearing the display area.
+            displayArea.setText(null);
+            
+      	} else {
+      		System.out.println("False word");
+      		displayAreaConfirmedWords.append("Invalid Word\n");
+      		System.out.println(userWord);
+      		displayArea.setText(null);
       	}
+
       	
+      	// Displaying the number of points. 
       	pointLabel.setText("Number of points: " + characterCount);
       	
-      	// Clearing the display area.
-      	displayArea.setText(null);
+      	
       	
       	// ==================================================================
       	// ==================================================================
@@ -357,45 +349,28 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 	
 	// Boggle points method.
-		private int bogglePoints(String tempWord) {
+	private int bogglePoints(String tempWord) {
 			// Words must be 3+ characters.
 			// for each character, points +1.
 			// five letter character = 5 points.
-			
-			System.out.println("boggle points tempWord: " + tempWord);
 			int characterCount = 0;
 			
 			// For each letter in the string, count+1;
-			if (tempWord.length() >= 4) {
-				for (int i = 0; i < tempWord.length(); i++) {
-					characterCount++;	
-				}
-				// un/comment if we don't want to penalize User for submitting 
-				// word with less than 3 characters.
-				//characterCount -= 1;
-			} else {
-				displayAreaConfirmedWords.append("Less than 3 chars \n");
-				System.out.println("A word that's less than 3 characters has been submitted.");
+			
+			for (int i = 0; i < tempWord.length(); i++) {
+				characterCount++;	
 			}
-			// For some reason the count is "one" more than the count
-			// should be. Decrement by 'one' to get the real point.
-		
-			// un/comment the following line of code if we want the user penalized for 
-			// confirming a word that is less than 3 chars.
-			 characterCount -= 1;
+
 			return(characterCount);
 		}
-	
-	
-	
+		
 	// Making buttons click able.
 	private void addListener() {
 		startBtn.addActionListener(this);
 		confirmWordBtn.addActionListener(this);
 		endGameBtn.addActionListener(this);
 	}
-	
-	
+
 	// ============= Main ================
 	public static void main(String[] args) {
 		BoggleGUI gui = new BoggleGUI();

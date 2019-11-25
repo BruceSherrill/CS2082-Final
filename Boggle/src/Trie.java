@@ -37,7 +37,7 @@ class Trie
 		Trie temp = this;
 		
 		
-		if (word.length() > 3) //ask group about this (minimum word length)
+		if (word.length() >= 3) //ask group about this (minimum word length)
 		{	
 			//for every letter in the word
 			for (int i = 0; i < word.length(); i++)
@@ -108,6 +108,5 @@ class Trie
 					System.out.println("ERROR: Invalid Dictionary File.");
 				}
 	}
-	
 	
 }
