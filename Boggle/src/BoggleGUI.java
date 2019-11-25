@@ -232,8 +232,13 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		JScrollPane scroll = new JScrollPane (displayArea);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		JScrollPane scroll2 = new JScrollPane (displayAreaConfirmedWords);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		rightPanel.add(scroll);
+		rightPanel.add(scroll2);
 		
 		
 	}
