@@ -376,3 +376,4 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		BoggleGUI gui = new BoggleGUI();
 	}	
 }
+
