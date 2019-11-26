@@ -88,6 +88,17 @@ public class BoggleGUI extends JFrame implements ActionListener {
     			buttonArray[xPosition][yPosition] = button;
     			count++;
     			
+    			
+    			// Mitch Testing.
+    			// Buttons have been assigned in previous lines of code here.
+    			// System.out.println(buttonArray[xPosition][yPosition].getText());
+    			
+    			
+    			
+    			
+    			
+    			
+    			
      			leftPanel.add(buttonArray[xPosition][yPosition]);
      			buttonArray[xPosition][yPosition].addActionListener(new ActionListener() {   
         			 @SuppressWarnings("deprecation")
