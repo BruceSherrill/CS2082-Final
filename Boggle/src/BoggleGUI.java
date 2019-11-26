@@ -40,6 +40,10 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	String possibleWords = "";
 	
+	//Global variables used for links
+	linkedList list = new linkedList();
+	boolean firstWord = true;
+	
 	Trie tree = new Trie();
 	
 
@@ -166,7 +170,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	
 	 public void findWords(boolean isSelected[][], int x, int y, String word) { 
-				
+		 
 		 	if(x>3 || x<0 || y>3 || y<0) {
 		 		return;//an error that causes the recursion to break
 		 	}
@@ -178,6 +182,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 				// to str 
 				isSelected[x][y] = true; 
 				word = word + buttonArray[x][y].getLabel().charAt(0);
+				
 				
 				// If str is present in dictionary, then print it 
 				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) {
@@ -261,10 +266,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	String clicker = e.getActionCommand();
-	
-	
-	
-	
 
       if (clicker == "Start"){
 			timer.startTimer();
@@ -309,13 +310,29 @@ public class BoggleGUI extends JFrame implements ActionListener {
       	 */
       	System.out.println("User word length: " + userWord.length());
       	if (tree.isWord(userWord) == true && userWord.length() >= 3) {
-      		System.out.print("true word, "); // test.
-      		// Appending the second display area to show the confirmed word.
-          	displayAreaConfirmedWords.append(userWord + "\n");
-          	// incrementing the CharacterCount/points.
-          	characterCount += bogglePoints(userWord);
-          	// Clearing the display area.
-            displayArea.setText(null);
+      		
+      		
+      		//Puts word to linkedlist
+			list.add(userWord.toLowerCase());
+			
+      		//If statement double checks word is not being used twice
+			//otherwise else statement awards points to player
+      		if(list.doublesTester() == true) {
+      		  displayArea.setLineWrap(true);
+      		  displayArea.setWrapStyleWord(true);
+      		  displayArea.append("\nYou Already Used That Word");
+      		} else {
+          		// Appending the second display area to show the confirmed word.
+              	displayAreaConfirmedWords.append(userWord + "\n");
+              	// incrementing the CharacterCount/points.
+              	characterCount += bogglePoints(userWord);
+              	// Clearing the display area.
+                displayArea.setText(null);
+      		}
+  
+      		
+      		
+      	
             
       	} else {
       		System.out.println("False word");
