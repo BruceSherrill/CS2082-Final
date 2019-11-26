@@ -93,7 +93,7 @@ class Trie
 				BufferedReader reader;
 				try 
 				{
-					reader = new BufferedReader(new FileReader("src/dictionary.txt"));
+					reader = new BufferedReader(new FileReader("src/resources/dictionary.txt"));
 					String line = reader.readLine();
 					while (line != null)
 						{
