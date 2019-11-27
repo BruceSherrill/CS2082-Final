@@ -318,9 +318,11 @@ public class BoggleGUI extends JFrame implements ActionListener {
       		//If statement double checks word is not being used twice
 			//otherwise else statement awards points to player
       		if(list.doublesTester() == true) {
-      		  displayArea.setLineWrap(true);
-      		  displayArea.setWrapStyleWord(true);
-      		  displayArea.append("\nYou Already Used That Word");
+      		  displayAreaConfirmedWords.setLineWrap(true);
+      		  displayAreaConfirmedWords.setWrapStyleWord(true);
+      		  displayAreaConfirmedWords.append("\nYou Already Used That Word\n");
+      		  list.remove(userWord.toLowerCase());
+      		  displayArea.setText(null);
       		} else {
           		// Appending the second display area to show the confirmed word.
               	displayAreaConfirmedWords.append(userWord + "\n");

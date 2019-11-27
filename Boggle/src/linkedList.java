@@ -17,6 +17,25 @@ public class linkedList {
 		
 	}
 	
+	public boolean remove(String target) {
+		linkNode cursor;
+		linkNode precursor;
+		
+		for(precursor = null, cursor = head; cursor != null;
+				precursor = cursor, cursor = cursor.getLink()) {
+			
+			if (cursor.getData().equals(target)) {
+				if (precursor == null) {
+					head = head.getLink();
+				} else {
+					precursor.setLink(cursor.getLink());
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean doublesTester() {
 		linkNode sub = head;
 		
