@@ -1,3 +1,4 @@
+
 public class Dice {
 
 
@@ -30,10 +31,11 @@ public class Dice {
 	}
 	public char[] getDieSet()
 	{
-		int ran = (int) ((Math.random() * 5) + 1);
+				
 		char[] temp = new char[16];
 		
 		for (int x=0; x<temp.length; x++) {
+			int ran = (int) ((Math.random() * 5) + 1);
 			temp[x] = dieArray[x][ran];
 		}
 		
