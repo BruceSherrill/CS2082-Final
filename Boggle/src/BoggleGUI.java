@@ -1,9 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -47,6 +52,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	Trie tree = new Trie();
 	
 
+	
+
 	private BoggleGUI () {
 		// Window Requirements.
 		super("Boggle");
@@ -82,6 +89,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 		clearBooleanBoard(nextSelection);
 
+		
+		
 		 //2 for loops that get the x & y coordinate
 		for(int x=0; x<4; x++) {
         	 for (int y=0; y<4; y++) {
@@ -89,6 +98,18 @@ public class BoggleGUI extends JFrame implements ActionListener {
       			  int xPosition = x;
 
       			button = new JButton("" + diceSet[count]);
+      			try {
+      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice.png"));
+      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+      		      button.setBorder(BorderFactory.createEmptyBorder());
+      		      button.setContentAreaFilled(false);
+      		    button.setHorizontalTextPosition(JButton.CENTER);
+      		  button.setVerticalTextPosition(JButton.CENTER);
+        	        button.setIcon(new ImageIcon(imgResize));         
+      		      } catch (IOException ex) {
+      		    	  System.out.println("Dice pic not found");
+      		      }
+
     			buttonArray[xPosition][yPosition] = button;
     			count++;
     			
@@ -100,8 +121,19 @@ public class BoggleGUI extends JFrame implements ActionListener {
         				 if (timer.getInGame() == true && canClick(xPosition, yPosition) == (true)){
         					 //temporary print statement
         					 System.out.println(xPosition + "," + yPosition + "     " + buttonArray[xPosition][yPosition].getLabel());
-        				     buttonArray[xPosition][yPosition].setBackground(Color.ORANGE);
+        				     buttonArray[xPosition][yPosition].setBackground(Color.ORANGE); 
         				     
+        				     try {
+        		      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice2.png"));
+        		      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+        		      		    buttonArray[xPosition][yPosition].setBorder(BorderFactory.createEmptyBorder());
+        		      		  buttonArray[xPosition][yPosition].setContentAreaFilled(false);
+        		      		buttonArray[xPosition][yPosition].setHorizontalTextPosition(JButton.CENTER);
+        		      		buttonArray[xPosition][yPosition].setVerticalTextPosition(JButton.CENTER);
+        		      		buttonArray[xPosition][yPosition].setIcon(new ImageIcon(imgResize));         
+        		      		      } catch (IOException ex) {
+        		      		    	  System.out.println("Dice pic not found");
+        		      		      }
         				  
         				     // Displaying the word onto the first display area.
         				     String letterSelection = buttonArray[xPosition][yPosition].getLabel();
@@ -361,6 +393,19 @@ public class BoggleGUI extends JFrame implements ActionListener {
     	  for(int x = 0; x < 4; x++) {
     		  for(int y = 0; y < 4; y++) {
     	    	  buttonArray[x][y].setBackground(null);
+    	    	  try {
+	      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice.png"));
+	      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
+	      		    buttonArray[x][y].setBorder(BorderFactory.createEmptyBorder());
+	      		  buttonArray[x][y].setContentAreaFilled(false);
+	      		buttonArray[x][y].setHorizontalTextPosition(JButton.CENTER);
+	      		buttonArray[x][y].setVerticalTextPosition(JButton.CENTER);
+	      		buttonArray[x][y].setIcon(new ImageIcon(imgResize));         
+	      		      } catch (IOException ex) {
+	      		    	  System.out.println("Dice pic not found");
+	      		      }
+
+    	    	  
     	    	  nextSelection[x][y] = true;
     		  }
     	  }
