@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 //maybe get rid of letter array and just use buttonArray
 public class BoggleGUI extends JFrame implements ActionListener {
 
@@ -60,7 +61,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		setSize(700, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 		// Boggle Board is divided into three panels. 
 		// Left for the dies
 		// right for the UI
@@ -283,7 +284,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	// Timer panel. 
 	private void buildBottomPanel() {
-		bottomPanel.add(timer);	
+		bottomPanel.add(timer, BorderLayout.WEST);	
 	}
 	
 	// Adding the panels to the frame after they've been built. 
@@ -291,7 +292,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		mainPanel.add(leftPanel, BorderLayout.WEST);
 		mainPanel.add(rightPanel, BorderLayout.EAST);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-		add(mainPanel);
+		getContentPane().add(mainPanel);
 	}
 	
 	// Action Listeners
