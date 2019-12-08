@@ -30,7 +30,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
 	private JPanel rightPanel = new JPanel(new GridLayout(3,2));
-	private JPanel bottomPanel = new JPanel(new BorderLayout());
+	private JPanel bottomPanel = new JPanel(new FlowLayout());
 	
 	private JTextArea displayArea = new JTextArea(7, 10);
 	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
@@ -232,15 +232,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 	
 	private void buildBottomPanel() {
-	//bottomPanel.add(timer);
-	bottomPanel.add(timer, BorderLayout.EAST);
-	JButton buttonex = new JButton();
-	buttonex.setOpaque(false);
-	buttonex.setContentAreaFilled(false);
-	buttonex.setBorderPainted(false);
-	buttonex.setPreferredSize(new Dimension(10,10));
-    bottomPanel.add(buttonex, BorderLayout.CENTER);
+	timer.setPreferredSize(new Dimension(100, 50));
 
+	bottomPanel.add(timer);
 
 	}
 	// Making buttons click able.

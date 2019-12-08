@@ -1,8 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -11,13 +16,34 @@ public class timer extends JPanel {
 
   JLabel label;
   Timer timer;
-  int count = 180;
+  int count = 10;
   boolean inGame;
-  JPanel timerPanel;
 
   public timer() 
   {
-	//setOpaque(false);
+	  JButton button = new JButton();
+	  JButton button2 = new JButton();
+	  JButton button3 = new JButton();
+	  button.setOpaque(false);
+	  button.setContentAreaFilled(false);
+	  button.setBorderPainted(false);
+	  button2.setOpaque(false);
+	  button2.setContentAreaFilled(false);
+	  button2.setBorderPainted(false);
+	  button3.setOpaque(false);
+	  button3.setContentAreaFilled(false);
+	  button3.setBorderPainted(false);
+	 //button.setPreferredSize(new Dimension(400,50));
+
+	setLayout(new GridLayout(1,4));
+	setPreferredSize(new Dimension(50, 100));
+	setOpaque(false);
+	add(button);
+	add(button2);
+	add(button3);
+
+
+
 	//set to false until the counter starts
 	inGame = false;
 
@@ -45,6 +71,8 @@ public class timer extends JPanel {
         else {
           ((Timer) (e.getSource())).stop();
           inGame = false;
+         label.setFont(new Font("Dialog", Font.PLAIN, 25));
+
           label.setText("GAME OVER");
 
         }
