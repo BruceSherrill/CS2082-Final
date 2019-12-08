@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +12,8 @@ public class timer extends JPanel {
   Timer timer;
   int count = 180;
   boolean inGame;
-  
-  
+  JPanel timerPanel;
+
   public timer() 
   {
 	//set to false until the counter starts

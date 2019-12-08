@@ -1,29 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -40,8 +29,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
 	private JPanel rightPanel = new JPanel(new GridLayout(3,4));
-	private JPanel bottomPanel = new JPanel(new BorderLayout());
-	private JPanel mainPanel = new JPanel(new BorderLayout());
+	private JPanel bottomPanel = new JPanel(new FlowLayout((FlowLayout.RIGHT)));
 	
 	private JTextArea displayArea = new JTextArea(7, 10);
 	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
@@ -82,10 +70,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
-		
-		// Background image icon
-		ImageIcon backgroundImage = new ImageIcon("Resources/Board2.png");
-		
+				
 		
 		// Boggle Board is divided into three panels. 
 		// Left for the dies
@@ -97,7 +82,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		addPanelsToFrame();
 		addListener();
 		tree.importDictionary();
-				
+
+		
 		setVisible(true);
 	}
 	
@@ -114,7 +100,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 		clearBooleanBoard(nextSelection);
 
-		
+
 		
 		 //2 for loops that get the x & y coordinate
 		for(int x=0; x<4; x++) {
@@ -123,14 +109,16 @@ public class BoggleGUI extends JFrame implements ActionListener {
       			  int xPosition = x;
 
       			button = new JButton("" + diceSet[count]);
+      		    button.setFont(new Font("Dialog", Font.PLAIN, 40));
+
       			try {
       		        Image img = ImageIO.read(getClass().getResource("Resources/blankDice.png"));
       		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
       		      button.setBorder(BorderFactory.createEmptyBorder());
       		      button.setContentAreaFilled(false);
-      		    button.setHorizontalTextPosition(JButton.CENTER);
-      		  button.setVerticalTextPosition(JButton.CENTER);
-        	        button.setIcon(new ImageIcon(imgResize));         
+      		      button.setHorizontalTextPosition(JButton.CENTER);
+      		      button.setVerticalTextPosition(JButton.CENTER);
+        	      button.setIcon(new ImageIcon(imgResize));         
       		      } catch (IOException ex) {
       		    	  System.out.println("Dice pic not found");
       		      }
@@ -333,6 +321,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(displayAreaConfirmedWords);
 		rightPanel.add(displayArea);
 		pointLabel.setFont(new Font("Lemon", Font.BOLD, 26));
+
 		
 		rightPanel.add(pointLabel);
 		displayArea.setEditable(false);
@@ -355,7 +344,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	// Timer panel. 
 	private void buildBottomPanel() {
-		bottomPanel.add(timer, BorderLayout.WEST);	
+		bottomPanel.add(timer);	
 		bottomPanel.setOpaque(false);
 	}
 	
@@ -363,13 +352,23 @@ public class BoggleGUI extends JFrame implements ActionListener {
     private void addPanelsToFrame() {
 
         lblBackgroundImage.setLayout(new FlowLayout());
+        lblBackgroundImage.setBounds(0, 0, 800, 600);
+
+        lblBackgroundImage.setSize(1000, 1000); //this will resize window
 
         lblBackgroundImage.setIcon(new ImageIcon("src/Resources/Board2.png"));
+		JButton buttonex = new JButton();
+		buttonex.setOpaque(false);
+		buttonex.setContentAreaFilled(false);
+		buttonex.setBorderPainted(false);
+		buttonex.setPreferredSize(new Dimension(30,100));
 
 
-        lblBackgroundImage.add(leftPanel, BorderLayout.WEST);
-        lblBackgroundImage.add(rightPanel, BorderLayout.EAST);
-        lblBackgroundImage.add(bottomPanel, BorderLayout.SOUTH);
+
+        lblBackgroundImage.add(leftPanel);
+        lblBackgroundImage.add(buttonex);
+        lblBackgroundImage.add(rightPanel);
+        lblBackgroundImage.add(bottomPanel);
         getContentPane().add(lblBackgroundImage);
         
     }
