@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ public class timer extends JPanel {
 
   public timer() 
   {
+	//setOpaque(false);
 	//set to false until the counter starts
 	inGame = false;
 
@@ -23,6 +25,7 @@ public class timer extends JPanel {
 	//What shows when the timer is not running
     label = new JLabel("3:00");
 	label.setForeground(Color.black);
+	label.setFont(new Font("Dialog", Font.PLAIN, 40));
 
     //Adds label to panel
     add(label);

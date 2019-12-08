@@ -19,6 +19,7 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 
 //maybe get rid of letter array and just use buttonArray
+@SuppressWarnings("serial")
 public class BoggleGUI extends JFrame implements ActionListener {
 
 	private JButton startBtn = new JButton("");
@@ -28,8 +29,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private JButton endGameBtn = new JButton("");
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
-	private JPanel rightPanel = new JPanel(new GridLayout(3,4));
-	private JPanel bottomPanel = new JPanel(new FlowLayout((FlowLayout.RIGHT)));
+	private JPanel rightPanel = new JPanel(new GridLayout(3,2));
+	private JPanel bottomPanel = new JPanel(new BorderLayout());
 	
 	private JTextArea displayArea = new JTextArea(7, 10);
 	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
@@ -78,7 +79,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		// Bottom for the timer. 
 		buildLeftPanel();
 		buildRightPanel();
-		buildBottomPanel();
 		addPanelsToFrame();
 		addListener();
 		tree.importDictionary();
@@ -87,10 +87,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 	
-	
-
 	// new game method
 	private void buildLeftPanel() {
+
 		
 		Dice die = new Dice();
 		char[] diceSet = new char[16];
@@ -109,7 +108,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
       			  int xPosition = x;
 
       			button = new JButton("" + diceSet[count]);
-      		    button.setFont(new Font("Dialog", Font.PLAIN, 40));
+      		    button.setFont(new Font("Dialog", Font.BOLD, 40));
 
       			try {
       		        Image img = ImageIO.read(getClass().getResource("Resources/blankDice.png"));
@@ -162,114 +161,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		leftPanel.setOpaque(false);
 	
 	}
-	
-	
-	
-	
-	//if returns true the user can click the button
-	//if returns false the user cannot click the button
-	private boolean canClick(int x, int y){
-
-		//all possible combinations
-		 final int[][] cell = {
-			        {x + 1,  y    },  //bottom
-			        {x    ,  y + 1},  //right
-			        {x - 1,  y    },  //top
-			        {x    ,  y - 1},  //left
-			        {x + 1,  y + 1},  //bottom-right
-			        {x + 1,  y - 1},  //bottom-left
-			        {x - 1,  y - 1},  //top-left
-			        {x - 1,  y + 1}   //top-right
-			    };
-		
-		 //determines if it is the first click on the board
-		 if (firstLetter == true){
-			 isSelected[x][y] = true;
-			 firstLetter = false;
-			 
-			 //for loop that runs through every combination in cell[][] 
-			 //what this does is sets every surrounding cell = true
-	    	  for(int i=0; i<cell.length; i++){
-	    			  if (cell[i][0] >=0 && cell[i][1] >=0 && cell[i][0] <4 && cell[i][1] <4){
-	    			  nextSelection[cell[i][0]] [cell[i][1]] = true;
-	    			  }
-	    	  }
-	     return true;
-		 }
-		 
-		 //isSelected[x][y] prevents the user from clicking the same button twice
-		 //nextSelection[x][y] only lets the user click the surrounding buttons
-		 else if (isSelected[x][y] == false && nextSelection[x][y] == true){
-			 clearBooleanBoard(nextSelection);
-			 //sets nextSelection[][] (surrounding cells) to true
-	    	  for(int h=0; h<cell.length; h++){
-	    			  if (cell[h][0] >=0 && cell[h][1] >=0 && cell[h][0] <4 && cell[h][1] <4){
-	    				  nextSelection[cell[h][0]] [cell[h][1]] = true;
-	    			  }
-	    	  }
-			 isSelected[x][y] = true;
-			 return true;
-		 }
-		return false;
-	}
-
-	
-	
-	 public void findWords(boolean isSelected[][], int x, int y, String word) { 
-		 
-		 	if(x>3 || x<0 || y>3 || y<0) {
-		 		return;//an error that causes the recursion to break
-		 	}
-		 	if (isSelected[x][y] == true) {
-		 		return;
-		 	}
-		 
-		 		// Mark current cell as visited and append current character 
-				// to str 
-				isSelected[x][y] = true; 
-				word = word + buttonArray[x][y].getLabel().charAt(0);
-				
-				
-				// If str is present in dictionary, then print it 
-				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) {
-					  //Code that makes sure appended line outputs nicely. 
-		    		  displayArea.setLineWrap(true);
-		    		  displayArea.setWrapStyleWord(true);
-		    		  displayArea.append(word + "\n");
-		    		  //System.out.println(word);
-		    		  //The above line can be de-commented out 
-		    		  //If wish to test words in text area match system out
-				}
-				 
-				
-				
-				//row <=x+1 ensures it won't go more than 1 to the right
-				//row<4 ensures it won't go past the 4th cell (edge of board)
-				for (int column=x-1; column<=x+1 && column<4; column++) {
-					for (int row=y-1; row<=y+1 && row<4; row++) {
-						findWords(isSelected, column, row, word); 
-					}
-				}
-		        	 
-
-				// Erase current character from string and mark visited 
-				// of current cell as false 
-				word="";
-				isSelected[x][y] = false; 
-			} 
-	 
-	 public boolean[][] clearBooleanBoard(boolean[][] booleanBoard){
-			//sets all of nextSelection[][] to false (condense)
-		 for(int x=0; x<booleanBoard.length; x++){
-			  for (int y=0; y<booleanBoard.length; y++){
-				  booleanBoard[x][y] = false;
-			  }
-		  }
-		return booleanBoard;
-	 }
-	
-	
-	// UI panel. 
+	//ui panel
 	private void buildRightPanel() {
 	    Image startImage, confirmImage, endGameImage;
 		try {
@@ -320,7 +212,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(endGameBtn);
 		rightPanel.add(displayAreaConfirmedWords);
 		rightPanel.add(displayArea);
-		pointLabel.setFont(new Font("Lemon", Font.BOLD, 26));
+		pointLabel.setFont(new Font("Dialog", Font.BOLD, 26));
 
 		
 		rightPanel.add(pointLabel);
@@ -337,43 +229,27 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		rightPanel.add(scroll);
 		rightPanel.add(scroll2);
 		rightPanel.setOpaque(false);
-
-		
 	}
-
 	
-	// Timer panel. 
 	private void buildBottomPanel() {
-		bottomPanel.add(timer);	
-		bottomPanel.setOpaque(false);
+	//bottomPanel.add(timer);
+	bottomPanel.add(timer, BorderLayout.EAST);
+	JButton buttonex = new JButton();
+	buttonex.setOpaque(false);
+	buttonex.setContentAreaFilled(false);
+	buttonex.setBorderPainted(false);
+	buttonex.setPreferredSize(new Dimension(10,10));
+    bottomPanel.add(buttonex, BorderLayout.CENTER);
+
+
 	}
-	
-	// Adding the panels to the frame after they've been built. 
-    private void addPanelsToFrame() {
-
-        lblBackgroundImage.setLayout(new FlowLayout());
-        lblBackgroundImage.setBounds(0, 0, 800, 600);
-
-        lblBackgroundImage.setSize(1000, 1000); //this will resize window
-
-        lblBackgroundImage.setIcon(new ImageIcon("src/Resources/Board2.png"));
-		JButton buttonex = new JButton();
-		buttonex.setOpaque(false);
-		buttonex.setContentAreaFilled(false);
-		buttonex.setBorderPainted(false);
-		buttonex.setPreferredSize(new Dimension(30,100));
-
-
-
-        lblBackgroundImage.add(leftPanel);
-        lblBackgroundImage.add(buttonex);
-        lblBackgroundImage.add(rightPanel);
-        lblBackgroundImage.add(bottomPanel);
-        getContentPane().add(lblBackgroundImage);
-        
-    }
-	
-	// Action Listeners
+	// Making buttons click able.
+	private void addListener() {
+		startBtn.addActionListener(this);
+		confirmWordBtn.addActionListener(this);
+		endGameBtn.addActionListener(this);
+	}
+	// Action Events for UI
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	String clicker = e.getActionCommand();
@@ -495,6 +371,133 @@ public class BoggleGUI extends JFrame implements ActionListener {
   	  
       }//end of else if()
 	}
+	// Adding the panels to the frame after they've been built. 
+    private void addPanelsToFrame() {
+
+        lblBackgroundImage.setLayout(new BorderLayout());
+        lblBackgroundImage.setBounds(0, 0, 800, 600);
+
+        lblBackgroundImage.setSize(1000, 1000); //this will resize window
+
+        lblBackgroundImage.setIcon(new ImageIcon("src/Resources/Board2.png"));
+		JButton buttonex = new JButton();
+		buttonex.setOpaque(false);
+		buttonex.setContentAreaFilled(false);
+		buttonex.setBorderPainted(false);
+		buttonex.setPreferredSize(new Dimension(20,100));
+
+		//pane.add(button, BorderLayout.CENTER);
+
+
+        lblBackgroundImage.add(leftPanel, BorderLayout.WEST);
+       // lblBackgroundImage.add(buttonex);
+        lblBackgroundImage.add(rightPanel, BorderLayout.EAST);
+        lblBackgroundImage.add(timer, BorderLayout.SOUTH);
+        getContentPane().add(lblBackgroundImage);
+        
+    }
+	
+    
+	//if returns true the user can click the button
+	//if returns false the user cannot click the button
+	private boolean canClick(int x, int y){
+
+		//all possible combinations
+		 final int[][] cell = {
+			        {x + 1,  y    },  //bottom
+			        {x    ,  y + 1},  //right
+			        {x - 1,  y    },  //top
+			        {x    ,  y - 1},  //left
+			        {x + 1,  y + 1},  //bottom-right
+			        {x + 1,  y - 1},  //bottom-left
+			        {x - 1,  y - 1},  //top-left
+			        {x - 1,  y + 1}   //top-right
+			    };
+		
+		 //determines if it is the first click on the board
+		 if (firstLetter == true){
+			 isSelected[x][y] = true;
+			 firstLetter = false;
+			 
+			 //for loop that runs through every combination in cell[][] 
+			 //what this does is sets every surrounding cell = true
+	    	  for(int i=0; i<cell.length; i++){
+	    			  if (cell[i][0] >=0 && cell[i][1] >=0 && cell[i][0] <4 && cell[i][1] <4){
+	    			  nextSelection[cell[i][0]] [cell[i][1]] = true;
+	    			  }
+	    	  }
+	     return true;
+		 }
+		 
+		 //isSelected[x][y] prevents the user from clicking the same button twice
+		 //nextSelection[x][y] only lets the user click the surrounding buttons
+		 else if (isSelected[x][y] == false && nextSelection[x][y] == true){
+			 clearBooleanBoard(nextSelection);
+			 //sets nextSelection[][] (surrounding cells) to true
+	    	  for(int h=0; h<cell.length; h++){
+	    			  if (cell[h][0] >=0 && cell[h][1] >=0 && cell[h][0] <4 && cell[h][1] <4){
+	    				  nextSelection[cell[h][0]] [cell[h][1]] = true;
+	    			  }
+	    	  }
+			 isSelected[x][y] = true;
+			 return true;
+		 }
+		return false;
+	}
+
+	 public void findWords(boolean isSelected[][], int x, int y, String word) { 
+		 
+		 	if(x>3 || x<0 || y>3 || y<0) {
+		 		return;//an error that causes the recursion to break
+		 	}
+		 	if (isSelected[x][y] == true) {
+		 		return;
+		 	}
+		 
+		 		// Mark current cell as visited and append current character 
+				// to str 
+				isSelected[x][y] = true; 
+				word = word + buttonArray[x][y].getLabel().charAt(0);
+				
+				
+				// If str is present in dictionary, then print it 
+				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) {
+					  //Code that makes sure appended line outputs nicely. 
+		    		  displayArea.setLineWrap(true);
+		    		  displayArea.setWrapStyleWord(true);
+		    		  displayArea.append(word + "\n");
+		    		  //System.out.println(word);
+		    		  //The above line can be de-commented out 
+		    		  //If wish to test words in text area match system out
+				}
+				 
+				
+				
+				//row <=x+1 ensures it won't go more than 1 to the right
+				//row<4 ensures it won't go past the 4th cell (edge of board)
+				for (int column=x-1; column<=x+1 && column<4; column++) {
+					for (int row=y-1; row<=y+1 && row<4; row++) {
+						findWords(isSelected, column, row, word); 
+					}
+				}
+		        	 
+
+				// Erase current character from string and mark visited 
+				// of current cell as false 
+				word="";
+				isSelected[x][y] = false; 
+			} 
+	 
+	 //clears the boolean board setting everything to false
+	 public boolean[][] clearBooleanBoard(boolean[][] booleanBoard){
+			//sets all of nextSelection[][] to false (condense)
+		 for(int x=0; x<booleanBoard.length; x++){
+			  for (int y=0; y<booleanBoard.length; y++){
+				  booleanBoard[x][y] = false;
+			  }
+		  }
+		return booleanBoard;
+	 }
 	
 	// Boggle points method.
 	private int bogglePoints(String tempWord) {
@@ -512,12 +515,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 			return(characterCount);
 		}
 		
-	// Making buttons click able.
-	private void addListener() {
-		startBtn.addActionListener(this);
-		confirmWordBtn.addActionListener(this);
-		endGameBtn.addActionListener(this);
-	}
 
 	// ============= Main ================
 	public static void main(String[] args) {
