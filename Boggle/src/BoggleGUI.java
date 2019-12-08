@@ -1,27 +1,42 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
+import java.awt.Font;
+
 //maybe get rid of letter array and just use buttonArray
 public class BoggleGUI extends JFrame implements ActionListener {
 
-	private JButton startBtn = new JButton("Start");
-	private JButton confirmWordBtn = new JButton("Confirm Word");
-	private JButton endGameBtn = new JButton("End Game");
+	private JButton startBtn = new JButton("");
+
+	
+	private JButton confirmWordBtn = new JButton("");
+	private JButton endGameBtn = new JButton("");
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
 	private JPanel rightPanel = new JPanel(new GridLayout(3,4));
@@ -32,11 +47,15 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
 	
 	// J label to display the given points. 
-	private JLabel pointLabel = new JLabel("Number of points: ");
+	private JLabel pointLabel = new JLabel("");
 	private int characterCount = 0;
 	
+	private JLabel lblBackgroundImage = new JLabel("");
+  
+	// Timer
     private timer timer = new timer();
     
+    // Button arrays.
 	JButton[][] buttonArray = new JButton[4][4];
 	boolean[][] isSelected = new boolean[4][4];
 	boolean[][] nextSelection = new boolean[4][4];
@@ -51,17 +70,23 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	boolean firstWord = true;
 	
 	Trie tree = new Trie();
-	
 
 	
-
 	private BoggleGUI () {
 		// Window Requirements.
 		super("Boggle");
+		
+		JLabel background;
+		
 		setSize(700, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
+		
+		// Background image icon
+		ImageIcon backgroundImage = new ImageIcon("Resources/Board2.png");
+		
+		
 		// Boggle Board is divided into three panels. 
 		// Left for the dies
 		// right for the UI
@@ -77,7 +102,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	}
 	
 	
-
 
 	// new game method
 	private void buildLeftPanel() {
@@ -100,7 +124,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
       			button = new JButton("" + diceSet[count]);
       			try {
-      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice.png"));
+      		        Image img = ImageIO.read(getClass().getResource("Resources/blankDice.png"));
       		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
       		      button.setBorder(BorderFactory.createEmptyBorder());
       		      button.setContentAreaFilled(false);
@@ -125,7 +149,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
         				     buttonArray[xPosition][yPosition].setBackground(Color.ORANGE); 
         				     
         				     try {
-        		      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice2.png"));
+        		      		        Image img = ImageIO.read(getClass().getResource("Resources/selectedDice.png"));
         		      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
         		      		    buttonArray[xPosition][yPosition].setBorder(BorderFactory.createEmptyBorder());
         		      		  buttonArray[xPosition][yPosition].setContentAreaFilled(false);
@@ -147,6 +171,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
         			 });
         	 }//end of y for loop
         }//end of x for loop
+		leftPanel.setOpaque(false);
 	
 	}
 	
@@ -258,11 +283,56 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	
 	// UI panel. 
 	private void buildRightPanel() {
+	    Image startImage, confirmImage, endGameImage;
+		try {
+			// Images
+			startImage = ImageIO.read(getClass().getResource("Resources/startImage.png"));
+		    Image startImageResized = startImage.getScaledInstance(110, 90, Image.SCALE_DEFAULT);
+		    
+		    confirmImage = ImageIO.read(getClass().getResource("Resources/confirmWordImage.png"));
+		    Image confirmWordResized = confirmImage.getScaledInstance(110, 90, Image.SCALE_DEFAULT);
+		    
+		    endGameImage = ImageIO.read(getClass().getResource("Resources/endGameImage.png"));
+		    Image endGameResized = endGameImage.getScaledInstance(110, 90, Image.SCALE_DEFAULT);
+		    
+		    startBtn.setIcon(new ImageIcon(startImageResized));   
+		    startBtn.setBorder(BorderFactory.createEmptyBorder());
+		    startBtn.setContentAreaFilled(false);
+		    startBtn.setHorizontalTextPosition(JButton.CENTER);
+		    startBtn.setVerticalTextPosition(JButton.CENTER);
+		    // Hiding the text from the start button.
+			startBtn.setActionCommand("Start");
+
+		    
+		    confirmWordBtn.setIcon(new ImageIcon(confirmWordResized));   
+		    confirmWordBtn.setBorder(BorderFactory.createEmptyBorder());
+		    confirmWordBtn.setContentAreaFilled(false);
+		    confirmWordBtn.setHorizontalTextPosition(JButton.CENTER);
+		    confirmWordBtn.setVerticalTextPosition(JButton.CENTER);
+		    confirmWordBtn.setActionCommand("Confirm Word");
+		    
+		    endGameBtn.setIcon(new ImageIcon(endGameResized));   
+		    endGameBtn.setBorder(BorderFactory.createEmptyBorder());
+		    endGameBtn.setContentAreaFilled(false);
+		    endGameBtn.setHorizontalTextPosition(JButton.CENTER);
+		    endGameBtn.setVerticalTextPosition(JButton.CENTER);
+		    endGameBtn.setActionCommand("End Game");
+ 
+		    
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+
 		rightPanel.add(startBtn);
 		rightPanel.add(confirmWordBtn);
 		rightPanel.add(endGameBtn);
 		rightPanel.add(displayAreaConfirmedWords);
 		rightPanel.add(displayArea);
+		pointLabel.setFont(new Font("Lemon", Font.BOLD, 26));
 		
 		rightPanel.add(pointLabel);
 		displayArea.setEditable(false);
@@ -277,7 +347,8 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 		rightPanel.add(scroll);
 		rightPanel.add(scroll2);
-		
+		rightPanel.setOpaque(false);
+
 		
 	}
 
@@ -285,15 +356,23 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	// Timer panel. 
 	private void buildBottomPanel() {
 		bottomPanel.add(timer, BorderLayout.WEST);	
+		bottomPanel.setOpaque(false);
 	}
 	
 	// Adding the panels to the frame after they've been built. 
-	private void addPanelsToFrame() {
-		mainPanel.add(leftPanel, BorderLayout.WEST);
-		mainPanel.add(rightPanel, BorderLayout.EAST);
-		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
-		getContentPane().add(mainPanel);
-	}
+    private void addPanelsToFrame() {
+
+        lblBackgroundImage.setLayout(new FlowLayout());
+
+        lblBackgroundImage.setIcon(new ImageIcon("src/Resources/Board2.png"));
+
+
+        lblBackgroundImage.add(leftPanel, BorderLayout.WEST);
+        lblBackgroundImage.add(rightPanel, BorderLayout.EAST);
+        lblBackgroundImage.add(bottomPanel, BorderLayout.SOUTH);
+        getContentPane().add(lblBackgroundImage);
+        
+    }
 	
 	// Action Listeners
 	@Override
@@ -378,7 +457,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
       	
       	// Displaying the number of points. 
-      	pointLabel.setText("Number of points: " + characterCount);
+      	pointLabel.setText("    " + characterCount);
       	
       	
       	
@@ -395,7 +474,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
     		  for(int y = 0; y < 4; y++) {
     	    	  buttonArray[x][y].setBackground(null);
     	    	  try {
-	      		        Image img = ImageIO.read(getClass().getResource("Resources/Dice.png"));
+	      		        Image img = ImageIO.read(getClass().getResource("Resources/blankDice.png"));
 	      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
 	      		    buttonArray[x][y].setBorder(BorderFactory.createEmptyBorder());
 	      		  buttonArray[x][y].setContentAreaFilled(false);
@@ -444,6 +523,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	// ============= Main ================
 	public static void main(String[] args) {
 		BoggleGUI gui = new BoggleGUI();
+		
 	}	
 }
 
