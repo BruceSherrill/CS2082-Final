@@ -311,7 +311,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
       	 *  for validation. 
       	 */
       	System.out.println("User word length: " + userWord.length());
-      	if (tree.isWord(userWord) == true && userWord.length() >= 3) {
+      	if (tree.search(userWord) == true && userWord.length() >= 3) {
       		
       		
       		//Puts word to linkedlist
@@ -476,7 +476,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 				
 				
 				// If str is present in dictionary, then print it 
-				if (word.length() >= 3 && tree.isWord(word.toLowerCase())) {
+				if (word.length() >= 3 && tree.search(word.toLowerCase())) {
 					  //Code that makes sure appended line outputs nicely. 
 		    		  displayArea.setLineWrap(true);
 		    		  displayArea.setWrapStyleWord(true);
