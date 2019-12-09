@@ -16,7 +16,7 @@ public class timer extends JPanel {
 
   JLabel label;
   Timer timer;
-  int count = 10;
+  int count = 180;
   boolean inGame;
 
   public timer() 
