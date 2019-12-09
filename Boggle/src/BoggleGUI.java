@@ -322,7 +322,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
       		if(list.doublesTester() == true) {
       		  displayAreaConfirmedWords.setLineWrap(true);
       		  displayAreaConfirmedWords.setWrapStyleWord(true);
-      		  displayAreaConfirmedWords.append("\nYou Already Used That Word\n");
+      		  displayAreaConfirmedWords.append("You Already Used That Word\n");
       		  list.remove(userWord.toLowerCase());
       		  displayArea.setText(null);
       		} else {
