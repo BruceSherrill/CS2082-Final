@@ -29,6 +29,14 @@ public class Dice {
 			  die9, die10, die11, die12,
 			  die13, die14, die15, die16};
 	}
+	
+	/** dice set. 
+	 * Parameters: None
+	 * Precondition: none 
+	 * PostCondition/Returns: returns "temp". Essentially sends the correct array of dies and their randomly
+	 * 						generated letters.
+	 * Throws: none
+	 */
 	public char[] getDieSet()
 	{
 				

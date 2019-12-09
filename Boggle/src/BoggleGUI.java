@@ -127,7 +127,16 @@ public class BoggleGUI extends JFrame implements ActionListener {
     			
      			leftPanel.add(buttonArray[xPosition][yPosition]);
      			buttonArray[xPosition][yPosition].addActionListener(new ActionListener() {   
-        			 @SuppressWarnings("deprecation")
+        			
+     				/** Action performed
+     				 * Parameters: "e" which is the user click. It'll depend on whatever button is being clicked. 
+     				 * Precondition: Precondition is making sure that all buttons are click-able, which is defined
+     				 * 				in addListner() method
+     				 * PostCondition/Returns: returns nothing. Method is to make sure all buttons are correctly placed.
+     				 * Throws: none
+     				 */
+     				
+     				@SuppressWarnings("deprecation")
 					public void actionPerformed(ActionEvent e) {
         				 //if canClick() returns true then the button is click able
         				 if (timer.getInGame() == true && canClick(xPosition, yPosition) == (true)){
@@ -161,7 +170,13 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		leftPanel.setOpaque(false);
 	
 	}
-	//ui panel
+	
+	/** RIGHT USER INTEFACE PANEL
+	 * Parameters: None
+	 * Precondition: none 
+	 * PostCondition/Returns: returns nothing. Method is to make sure all buttons are correctly placed.
+	 * Throws: none
+	 */
 	private void buildRightPanel() {
 	    Image startImage, confirmImage, endGameImage;
 		try {
@@ -237,7 +252,13 @@ public class BoggleGUI extends JFrame implements ActionListener {
 	bottomPanel.add(timer);
 
 	}
-	// Making buttons click able.
+
+	/** // Making buttons click able.
+	 * Parameters: None
+	 * Precondition: Making sure the buttons are click-able.
+	 * PostCondition/Returns: None - Main functionality is to provide functions to buttons. 
+	 * Throws: None 
+	 */
 	private void addListener() {
 		startBtn.addActionListener(this);
 		confirmWordBtn.addActionListener(this);
