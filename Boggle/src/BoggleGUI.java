@@ -418,7 +418,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
         
     }
 	
-    
+
 
     /*Description:
      * Takes in an x y coordinate and returns whether or not 
