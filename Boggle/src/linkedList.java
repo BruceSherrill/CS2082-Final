@@ -1,9 +1,17 @@
 
+
 public class linkedList {
 	
+	//cursor varibles to keep track of head and tail of linkedlist
 	private linkNode head = null;
 	private linkNode tail = null;
 	
+	/** Action performed: Adds a new node to list
+	 * Parameters: A String containing node data
+	 * Precondition: None
+	 * PostCondition: A new node will be added 
+	 * Throws: None 
+	 */
 	public void add(String data) {
 		
 		if (tail == null) {
@@ -17,6 +25,12 @@ public class linkedList {
 		
 	}
 	
+	/** Action performed: Will remove a node from linkedlist
+	 * Parameters: A String containing the target data of node you want gone
+	 * Precondition: None
+	 * PostCondition: A node will be removed from linked list
+	 * Throws: None
+	 */
 	public boolean remove(String target) {
 		linkNode cursor;
 		linkNode precursor;
@@ -36,6 +50,12 @@ public class linkedList {
 		return false;
 	}
 	
+	/** Action performed: Tests for duplicate of node trying to be added to list
+	 * Parameters: None
+	 * Precondition: None
+	 * PostCondition: No same nodes will exist in linkedlist
+	 * Throws: None
+	 */
 	public boolean doublesTester() {
 		linkNode sub = head;
 		
@@ -57,7 +77,7 @@ public class linkedList {
 		return false;
 	}
 	
-	
+	//Basic to String method
 	@Override
 	public String toString() {
 		
@@ -75,3 +95,4 @@ public class linkedList {
 	}
 	
 }
+
