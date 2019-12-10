@@ -30,9 +30,9 @@ public class BoggleGUI extends JFrame implements ActionListener {
 
 	private JPanel leftPanel = new JPanel(new GridLayout(4,4));
 	private JPanel rightPanel = new JPanel(new GridLayout(3,2));
-	private JPanel bottomPanel = new JPanel(new FlowLayout());
 	
 	private JTextArea displayArea = new JTextArea(7, 10);
+
 	private JTextArea displayAreaConfirmedWords = new JTextArea(7, 10);
 	
 	// J label to display the given points. 
@@ -140,10 +140,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 					public void actionPerformed(ActionEvent e) {
         				 //if canClick() returns true then the button is click able
         				 if (timer.getInGame() == true && canClick(xPosition, yPosition) == (true)){
-        					 //temporary print statement
-        					 System.out.println(xPosition + "," + yPosition + "     " + buttonArray[xPosition][yPosition].getLabel());
-        				     buttonArray[xPosition][yPosition].setBackground(Color.ORANGE); 
-        				     
+
         				     try {
         		      		        Image img = ImageIO.read(getClass().getResource("Resources/selectedDice.png"));
         		      		      Image imgResize = img.getScaledInstance(90, 90, Image.SCALE_DEFAULT);
@@ -236,23 +233,18 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		JScrollPane scroll = new JScrollPane (displayArea);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		
 		JScrollPane scroll2 = new JScrollPane (displayAreaConfirmedWords);
-		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+		
 		rightPanel.add(scroll);
 		rightPanel.add(scroll2);
 		rightPanel.setOpaque(false);
 	}
 	
-	private void buildBottomPanel() {
-	timer.setPreferredSize(new Dimension(100, 50));
-
-	bottomPanel.add(timer);
-
-	}
-
 	/** // Making buttons click able.
 	 * Parameters: None
 	 * Precondition: Making sure the buttons are click-able.
@@ -264,6 +256,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		confirmWordBtn.addActionListener(this);
 		endGameBtn.addActionListener(this);
 	}
+	
 	// Action Events for UI
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -294,6 +287,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
             		findWords(isSelected, x, y, possibleWords);
               	 }
        		}
+
     	  }
 
     	 timer.resetTimer();
@@ -310,8 +304,22 @@ public class BoggleGUI extends JFrame implements ActionListener {
       	 *  the word is sent into the isWord method in Trie
       	 *  for validation. 
       	 */
-      	System.out.println("User word length: " + userWord.length());
-      	if (tree.search(userWord) == true && userWord.length() >= 3) {
+      	/*Description:
+         * Recursion method to find all possible words on the 4x4 grid
+         * 
+         * Parameters:
+         * boolean isSelected[][] - tells whether the button has been visited or not
+         * int x- x coordinate of the passed element
+         * int y- y coordinate of the passed element
+         * String word - the string the letters are being appended to
+         * 
+         * PreCondition: 
+         * x and y cant be <0 or >3
+         * isSelected[][] - must be false
+         * 
+         * PostCondition
+         * if word is valid it is appended to text area
+         */      	if (tree.search(userWord) == true && userWord.length() >= 3) {
       		
       		
       		//Puts word to linkedlist
@@ -339,9 +347,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
       	
             
       	} else {
-      		System.out.println("False word");
       		displayAreaConfirmedWords.append("Invalid Word\n");
-      		System.out.println(userWord);
       		displayArea.setText(null);
       	}
 
@@ -359,7 +365,6 @@ public class BoggleGUI extends JFrame implements ActionListener {
     	  
     	  
     	  
-    	  //Will reset button backgrounds so no longer orange. 
     	  for(int x = 0; x < 4; x++) {
     		  for(int y = 0; y < 4; y++) {
     	    	  buttonArray[x][y].setBackground(null);
@@ -386,6 +391,7 @@ public class BoggleGUI extends JFrame implements ActionListener {
   	  
       }//end of else if()
 	}
+	
 	// Adding the panels to the frame after they've been built. 
     private void addPanelsToFrame() {
 
@@ -413,8 +419,22 @@ public class BoggleGUI extends JFrame implements ActionListener {
     }
 	
     
-	//if returns true the user can click the button
-	//if returns false the user cannot click the button
+
+    /*Description:
+     * Takes in an x y coordinate and returns whether or not 
+     * the button is clickable. Also sets all surrounding buttons
+     * to 'clickable'
+     * 
+     * Parameters:
+     * int x - x coordinate of the button being attempted
+     * int y - y coordinate of the button being attempted
+     * 
+     * PreCondition: 
+     * must be an int contained with in the 0-3 board !<0 && !>3
+     * 
+     * PostCondition
+     * returns true or false whether the button is clickable or not
+     */
 	private boolean canClick(int x, int y){
 
 		//all possible combinations
@@ -459,8 +479,24 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		 }
 		return false;
 	}
-
-	 public void findWords(boolean isSelected[][], int x, int y, String word) { 
+	
+	/*Description:
+     * Recursion method to find all possible words on the 4x4 grid
+     * 
+     * Parameters:
+     * boolean isSelected[][] - tells whether the button has been visited or not
+     * int x- x coordinate of the passed element
+     * int y- y coordinate of the passed element
+     * String word - the string the letters are being appended to
+     * 
+     * PreCondition: 
+     * x and y cant be <0 or >3
+     * isSelected[][] - must be false
+     * 
+     * PostCondition
+     * if word is valid it is appended to text area
+     */
+public void findWords(boolean isSelected[][], int x, int y, String word) { 
 		 
 		 	if(x>3 || x<0 || y>3 || y<0) {
 		 		return;//an error that causes the recursion to break
@@ -468,34 +504,39 @@ public class BoggleGUI extends JFrame implements ActionListener {
 		 	if (isSelected[x][y] == true) {
 		 		return;
 		 	}
-		 
 		 		// Mark current cell as visited and append current character 
 				// to str 
 				isSelected[x][y] = true; 
 				word = word + buttonArray[x][y].getLabel().charAt(0);
-				
-				
+
 				// If str is present in dictionary, then print it 
 				if (word.length() >= 3 && tree.search(word.toLowerCase())) {
 					  //Code that makes sure appended line outputs nicely. 
 		    		  displayArea.setLineWrap(true);
 		    		  displayArea.setWrapStyleWord(true);
 		    		  displayArea.append(word + "\n");
-		    		  //System.out.println(word);
-		    		  //The above line can be de-commented out 
-		    		  //If wish to test words in text area match system out
+
 				}
 				 
-				
-				
-				//row <=x+1 ensures it won't go more than 1 to the right
-				//row<4 ensures it won't go past the 4th cell (edge of board)
-				for (int column=x-1; column<=x+1 && column<4; column++) {
-					for (int row=y-1; row<=y+1 && row<4; row++) {
-						findWords(isSelected, column, row, word); 
-					}
-				}
+				final int[][] cell = {
+				        {x + 1,  y    },  //bottom
+				        {x    ,  y + 1},  //right
+				        {x - 1,  y    },  //top
+				        {x    ,  y - 1},  //left
+				        {x + 1,  y + 1},  //bottom-right
+				        {x + 1,  y - 1},  //bottom-left
+				        {x - 1,  y - 1},  //top-left
+				        {x - 1,  y + 1}   //top-right
+				    };
+		    	  for(int i=0; i<cell.length; i++){
+	    			  if (cell[i][0] >=0 && cell[i][1] >=0 && cell[i][0] <4 && cell[i][1] <4){
+							findWords(isSelected, cell[i][0], cell[i][1], word); 
+	    			  }
+		    	  }
+
 		        	 
+				
+				
 
 				// Erase current character from string and mark visited 
 				// of current cell as false 
@@ -503,7 +544,18 @@ public class BoggleGUI extends JFrame implements ActionListener {
 				isSelected[x][y] = false; 
 			} 
 	 
-	 //clears the boolean board setting everything to false
+	/*Description:
+   * clears the boolean board setting everything to false   
+   * 
+   * Parameters:
+   * boolean [][] - the board you want reset
+   * 
+   * PreCondition: 
+   * only accepts boolean[][]
+   * 
+   * PostCondition
+   * sets the passed array to false
+   */
 	 public boolean[][] clearBooleanBoard(boolean[][] booleanBoard){
 			//sets all of nextSelection[][] to false (condense)
 		 for(int x=0; x<booleanBoard.length; x++){
